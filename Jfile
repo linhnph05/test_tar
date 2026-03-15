@@ -5,7 +5,8 @@ pipeline {
     stage('Trigger Jenkins untarFrom') {
       steps {
         script {
-          String ws = pwd()test.tar.gz")
+          String ws = pwd()
+          File src = new File(ws, "test.tar.gz")
           if (!src.exists()) {
             error("test.tar.gz not found in workspace")
           }
